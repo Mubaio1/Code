@@ -1,0 +1,59 @@
+#include<iostream>
+using namespace std;
+const int N = 100010;
+
+int head,e[N],ne[N],idx;//e存值  ne存指针  head为头结点 idx为当前节点
+
+void init()
+{
+    head = -1;
+    idx = 0;
+}//head是指针位置标记 idx是值的数组中的位置标记
+
+void add_to_head(int x)
+{
+    e[idx] = x;
+    ne[idx] = head;
+    head = idx;//让这个idx成为新的head
+    idx++;
+}//用数组模拟链表的操作
+
+void add(int k,int x)
+{
+    e[idx] = x;
+    ne[idx] = ne[k];//这里不一样是因为前面是指向head，这里指向k的后面的位置
+    ne[k] = idx;
+    idx++;
+}
+
+void remove(int k)
+{
+    ne[k] = ne[ne[k]];
+}
+int main()
+{
+    int m;
+    char op;
+    int x,k;
+    init();
+    scanf("%d",&m);
+    for(int i=0;i<m;i++){
+        cin >> op;
+        if(op == 'H'){
+            cin >> x;
+            add_to_head(x);
+        }
+        if(op == 'D'){
+            cin >> k;
+            if(!k) head = ne[head];//头结点没有前面的节点，直接往后挪一位
+            else remove(k-1);
+        }
+        if(op == 'I'){
+            cin >> k >> x;
+            add(k-1,x);
+        }
+    }
+    for(int i=head;i!=-1;i=ne[i]) printf("%d ",e[i]);
+    cout << endl;
+    return 0;
+}
