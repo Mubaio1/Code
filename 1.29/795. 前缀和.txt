@@ -1,0 +1,19 @@
+#include<bits/stdc++.h>
+using namespace std;
+int record[100010];
+int a[100010];
+int main()
+{
+    int m,n;
+    cin >> n >> m;
+    for(int i=1;i<=n;i++){
+        cin >> a[i];
+        record[i] = record[i-1]+a[i];
+    }
+    while(m--){
+        int l,r;
+        cin >> l >> r;
+        cout << record[r] - record[l-1] << endl;
+    }
+    return 0;
+}

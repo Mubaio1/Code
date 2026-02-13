@@ -1,0 +1,35 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int q[100010];//标记根的序号
+
+int find(int x)
+{
+    if(q[x] !=x) q[x] = find(q[x]);//循环找该节点的根，因为根一定满足q[x] = x
+    return q[x];
+}
+
+
+int main()
+{
+    int n,m;
+    cin >> n >> m;
+    for(int i=1;i<=n;i++){
+        q[i] = i;//每个数都以自己为根
+    }
+    while(m--){
+        string op;
+        cin >> op;
+        int a,b;
+        if(op == "M"){
+            cin >> a >> b;
+            q[find(a)] = find(b);     //将a集合并入b集合，让a的根并入b的根，并以b的根为根 a的根不再是根
+        }
+        else{//op=="Q"
+            cin >> a >> b;
+            if(find(a) == find(b)) cout << "Yes" << endl;
+            else cout << "No" << endl;
+        }
+    }
+    return 0;
+}

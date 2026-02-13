@@ -1,0 +1,37 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int INF = 1e9;
+const int N = 510;
+int f[N][N];
+int w[N][N];
+int n;
+int main()
+{
+    //要先把所有的f置为负无穷，不然会有边界问题如果上来就是负数不一定能转移
+    
+    memset(f,-0x3f,sizeof f);
+    cin >> n;
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=i;j++)
+        {
+            cin >> w[i][j];
+        }
+    }
+    // for(int i=0;i<=n;i++){
+    //     for(int j=0;j<n+1;j++){
+    //         //其次 每一行需要多初始化一个，因为计算左上和右上的不一定有数据，要比w数组多初始化一圈
+    //         f[i][j] = -INF;
+    //     }
+    // }
+    f[1][1] = w[1][1];
+    for(int i=2;i<=n;i++){
+        for(int j=1;j<=i;j++){
+            f[i][j] = max(f[i-1][j-1],f[i-1][j])+w[i][j];
+        }
+    }
+    int res = -INF;
+    for(int j=1;j<=n;j++) res = max(res,f[n][j]);
+    cout << res << endl;
+    return 0;
+}

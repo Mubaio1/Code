@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+
+int main()
+{
+    map<string,int> m;
+    int n;
+    cin >> n;
+    while(n--){
+        string op;
+        string ch;
+        cin >> op;
+        if(op == "I"){
+            cin >> ch;
+            auto it = m.find(ch);
+            if(it == m.end()){
+                m.insert({ch,1});
+            }
+            else{
+                it->second++;
+            }
+        }
+        else{//“Q”
+            cin >> ch;
+            auto it = m.find(ch);
+            if(it == m.end()){
+                cout << '0' << endl;
+            }
+            else{
+                cout << it->second << endl;
+            }
+        }
+    }
+    return 0;
+}

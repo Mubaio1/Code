@@ -1,0 +1,58 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 200010;
+typedef pair<int,int> PII;
+
+int h[N],e[N],w[N],ne[N],idx;
+int n,m;
+int dist[N];
+int st[N];
+void add(int x,int y,int z)
+{
+    e[idx] = y;
+    w[idx] = z;
+    ne[idx] = h[x];
+    h[x] = idx++;
+}
+
+int dji()
+{
+    memset(dist,0x3f3f3f3f,sizeof dist);
+    dist[1] = 0;
+    priority_queue<PII,vector<PII>,greater<PII>> heap;
+    heap.push({0,1});
+    while(heap.size())
+    {
+        auto t = heap.top();
+        heap.pop();
+        int va = t.first;
+        int key = t.second;
+        if(st[key]) continue;
+        st[key] = true;
+        for(int i=h[key];i!=-1;i=ne[i])
+        {
+            int j = e[i];
+            if(dist[j] > (dist[key]+w[i])){ 
+                dist[j] = dist[key]+w[i];
+                heap.push({dist[j],j});//更新最短距离的边并将其加入堆，多个边在堆内自动排序下一次一定弹出最小的
+                // cout << dist[j] << endl;
+            }
+        }
+    }
+    if(dist[n] == 0x3f3f3f3f) return -1;
+    return dist[n];
+}
+
+
+int main()
+{
+    memset(h,-1,sizeof h);
+    cin >> n >> m;
+    while(m--){
+        int a,b,c;
+        cin >> a >> b >> c;
+        add(a,b,c);
+    }
+    cout << dji() << endl;
+    return 0;
+}

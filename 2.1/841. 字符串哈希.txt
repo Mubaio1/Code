@@ -1,0 +1,34 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 100003,P = 131;
+unsigned long long h[N],p[N];//h[N]记录哈希值  p[N]记录的是相差的权重
+char str[N];
+
+//使用unsigned longlong是因为选取Q=2^64 而该类型有自动的取模功能，正好为2的64次方
+
+//哈希值平移的方式  将h[l]的子串乘以一个倍数，这样的话用右侧哈希减去左侧的哈希值的时候可以消去相差的位置权重
+//比如abcde中 l=3，r=5则p[3]即为他们相差的权重位数 将l-1的值乘以这个位数可以得到左边字符串与一堆0组合的哈希值
+//然后用右边没有后缀0的组合减去左边的值即可得到l——r的子串的哈希值
+unsigned long long get(int l,int r)
+{
+    return h[r]-h[l-1]*p[r-l+1];//计算出子串的哈希值 消去不在区间内部的部分
+}
+
+int main()
+{
+    int n,m;
+    scanf("%d%d",&n,&m);
+    scanf("%s",str+1);
+    p[0] = 1;//映射的时候避免出现0，不然会导致如A、AA、AAA等字符串相等的情况
+    for(int i=1;i<=n;i++){
+        h[i] = h[i-1]*P+str[i];//前缀和记录字符串的哈希值
+        p[i] = p[i-1]*P;//--------------记录l与r相差的权重
+    }
+    while(m--){
+        int l1,r1,l2,r2;
+        cin >> l1 >> r1 >> l2 >> r2;
+        if(get(l1,r1) == get(l2,r2)) cout << "Yes" << endl;
+        else cout << "No" << endl;
+    }
+    return 0;
+}

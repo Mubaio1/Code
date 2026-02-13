@@ -1,0 +1,49 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 100010;
+int n;
+int e[N*2],ne[N*2],h[N];
+int idx;
+bool st[N];//标记访问数组
+int ans = N;//记录最小的最大值
+void add(int a,int b)//添加一条有向边，无向边则相反进行调用即可
+{
+    e[idx] = b;
+    ne[idx] = h[a];
+    h[a] = idx++;
+}
+
+int dfs(int u)
+{
+    int res = 0;
+    st[u] = true;
+    int sum = 1;
+    for(int i=h[u];i!=-1;i=ne[i])
+    {
+        int j = e[i];//访问邻接表中下一个节点的值，并记录    
+        if(!st[j]){
+            int s = dfs(j);
+            res = max(res,s);
+            sum+=s;//统计该节点子节点下面的节点，然后用n-sum作为其他连通分支的节点
+        }
+    }
+    res = max(res,n-sum);//看哪个连通分量节点数多
+    ans = min(ans,res);//每次循环找到最小的最大值
+    return sum;
+}
+
+
+int main()
+{
+    cin >> n;
+    memset(h,-1,sizeof h);
+    for(int i=0;i<n-1;i++){
+        int a,b;
+        cin >> a >> b;
+        add(a,b);
+        add(b,a);
+    }
+    dfs(1);
+    cout << ans << endl;
+    return 0;
+}

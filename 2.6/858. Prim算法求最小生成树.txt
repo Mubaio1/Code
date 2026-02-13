@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+const int INF = 0x3f3f3f3f;
+const int N = 510;
+int g[N][N];
+int dist[N];
+bool st[N];
+int n,m;
+
+int prim()
+{
+    memset(dist,0x3f,sizeof dist);
+    int res = 0;
+    for(int i=0;i<n;i++)//循环n次
+    {
+        int t = -1;//标志
+        for(int j=1;j<=n;j++)//找到最小点
+        {
+            if(!st[j] && (t==-1 || dist[t]>dist[j]))
+            {
+                t = j;
+            }
+        }
+        if(i && dist[t]==INF) return INF;
+        //i不为0且t为无穷的时候表示不存在最小生成树,选第一个点的时候其他都是无穷也没事 这里不同初始化也可以
+        if(i) res+=dist[t];//判断条件更新ans
+        st[t] = true;
+        for(int j=1;j<=n;j++)
+        {
+            dist[j] = min(dist[j],g[t][j]);
+        }
+
+        // cout << res << endl;
+    }
+    return res;
+}
+
+
+
+int main()
+{
+    memset(g,0x3f,sizeof g);
+    cin >> n >> m;
+    while(m--)
+    {
+        int u,v,w;
+        cin >> u >> v >> w;
+        g[u][v] = g[v][u] = min(g[u][v],w);
+    }
+    int s = prim();
+    if(s == INF) cout << "impossible" << endl;
+    else cout << s << endl;
+    return 0;
+}

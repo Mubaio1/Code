@@ -1,0 +1,48 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+const int N = 100010;
+
+int son[N][26];//每个点的所有儿子  数组对应所有的儿子 以值作为子节点是否存在
+int cnt[N];//以当前节点结尾的单词有多少个
+int idx;//存储当前用到的下标-----下标是0的点是根节点也是空节点
+char str[N];
+
+void insert(char str[])
+{
+    int p = 0;//每次都要从根节点进行插入的操作
+    for(int i=0;str[i];i++){
+        int u = str[i] - 'a';
+        if(!son[p][u]) son[p][u] = ++idx;//创建一个新的节点->不同的字符占用的下标不一样保证不会指向同一节点
+        p = son[p][u];//往下迭代
+    }
+    cnt[p]++;//插入到该节点如果停止了，就表明以该节点结束的字符个数+1
+}
+
+int query(char str[])
+{
+    int p = 0;
+    for(int i=0;str[i];i++){
+        int u = str[i] - 'a';
+        if(!son[p][u]) return 0;//表示空节点 没有以该节点的单词
+        p = son[p][u];
+    }
+    return cnt[p];
+}
+
+int main()
+{
+    int n;
+    cin >> n;
+    while(n--){
+        string op;
+        cin >> op >> str;
+        if(op == "I"){
+            insert(str);
+        }
+        else{
+            cout << query(str) << endl;
+        }
+    }
+    return 0;
+}

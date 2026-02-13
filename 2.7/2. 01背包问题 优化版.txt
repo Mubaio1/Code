@@ -1,0 +1,34 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 1010;
+int f[N];
+int v[N],w[N];
+int n,m;
+
+int main()
+{
+    int res = 0;
+    cin >> n >> m;
+    for(int i=1;i<=n;i++)
+    {
+        cin >> v[i] >> w[i];
+    }
+    // for(int i=1;i<=n;i++)
+    // {
+    //     for(int j=1;j<=m;j++){
+    //         f[i][j] = f[i-1][j];//记录不包含i的时候背包值并处理j<v[i]时的情况
+    //         if(j >= v[i]) f[i][j] = max(f[i-1][j],f[i-1][j-v[i]]+w[i]);//比较不包含i和包含i的值
+    //     }
+    // }
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=m;j>=v[i];j--){
+            //从v[i]到m正向遍历是错误的 因为在更新的时候j-v[i]是一个严格小于j的数，会导致更新不是用的i-1层
+            //也就是说正序的时候会导致是从i更新，用了该循环内的值进行了二次更新导致结果错误即物品重复使用
+            //逆序时,j-v[i]的值小于j，也就是说一定前面的值还没被更新过，循环只会用到更小的值，保证了不重复
+            f[j] = max(f[j],f[j-v[i]]+w[i]);
+        }
+    }
+    cout << f[m] << endl;
+    return 0;
+}

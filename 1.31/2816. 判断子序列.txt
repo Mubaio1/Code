@@ -1,0 +1,29 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 100010;
+int b[N],a[N];
+int ra,rb;
+int main()
+{
+    int n,m;
+    cin >> n >> m;
+    for(int i=1;i<=n;i++) cin >> a[i];
+    for(int i=1;i<=m;i++) cin >> b[i];
+    ra = 1;
+    rb = 1;
+    while(ra<=n && rb<=m){
+        while(rb<=m && a[ra]!=b[rb]){
+            rb++;
+        } 
+        if(rb>m) break;//注意边界问题 !!!!!!!!!!
+        ra++;
+        rb++;
+    }
+    if(ra<=n){
+        cout << "No" <<endl;
+    }
+    else{
+        cout << "Yes" << endl;
+    }
+    return 0;
+}

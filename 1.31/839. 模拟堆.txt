@@ -1,0 +1,82 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+const int N = 100010;
+int h[N];//堆
+int cnt;//堆中的元素个数
+int idx;//记录插入的第n个数
+int rec[N];//记录插入的次序数组
+void adjust(int t)
+{
+    int u = t;
+    if(2*u <= cnt && h[2*u]<h[t]) t = 2*u;
+    if(2*u+1 <= cnt && h[2*u+1]<h[t]) t = 2*u+1;
+    if(u!=t){
+        swap(h[u],h[t]);
+        swap(rec[u],rec[t]);//将两个调整的节点的次序也进行调整
+        adjust(t);
+    }
+}
+
+void up(int t)
+{
+    while(t/2 && h[t/2] > h[t])
+    {
+        swap(h[t],h[t/2]);
+        swap(rec[t],rec[t/2]);
+        t = t/2;
+    }
+}
+
+int main()
+{
+    int n;
+    cin >> n;
+    while(n--){
+        string s;
+        int k,x;
+        cin >> s;
+        if(s == "I"){
+            cin >> x;
+            h[++cnt] = x;
+            rec[cnt] = ++idx;//rec[i]存cnt的值，h[cnt]的值为x即插入的值
+            up(cnt);
+        }
+        else if(s == "PM"){
+            cout << h[1]  << endl;
+            // for(int i=1;i<=cnt;i++) cout << i << "--" << h[i] << " " << rec[i] << "    ";
+            // cout << endl;
+        }
+        else if(s == "DM"){//删除最小值
+            h[1] = h[cnt];
+            swap(rec[1],rec[cnt]);
+            cnt--;
+            adjust(1);
+        }
+        //对于第k个都要判断是往上还是往下-----------------------------------
+        else if(s == "D"){
+            cin >> k;
+            for(int i=1;i<=cnt;i++){
+                if(rec[i] == k){
+                    h[i] = h[cnt];
+                    swap(rec[i],rec[cnt]);
+                    cnt--;
+                    if(i > 1 && h[i] < h[i/2]) up(i);
+                    else adjust(i);//注意这里要判断
+                    break;
+                }
+            }
+        }
+        else{// s=="C"
+            cin >> k >> x;
+            for(int i=1;i<=cnt;i++){
+                if(rec[i] == k){
+                    if(h[i] > x){h[i] = x;up(i);} 
+                    if(h[i] < x){h[i] = x;adjust(i);}
+                    break;
+                }
+            }            
+        }
+    }
+    return 0;
+}

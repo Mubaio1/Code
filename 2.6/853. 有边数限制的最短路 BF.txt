@@ -1,0 +1,51 @@
+//边权可能为负数时不能使用迪杰斯特拉算法
+#include<bits/stdc++.h>
+using namespace std;
+int n,m,k;
+int dist[510];
+int last[510];
+struct{
+    int a;
+    int b;
+    int c;
+}g[10010];
+
+int idx;
+void add(int x,int y,int z)
+{
+    g[idx].a = x;
+    g[idx].b = y;
+    g[idx].c = z;
+    idx++;
+}
+
+void bf(int k)
+{
+    memset(dist,0x3f,sizeof dist);
+    dist[1] = 0;
+    for(int i=0;i<k;i++){
+        memcpy(last,dist,sizeof dist);//保存每一次的用来求距离的数组
+        for(int j=0;j<m;j++){
+            auto e = g[j];
+            dist[e.b] = min(dist[e.b],last[e.a]+e.c);
+        }
+    }
+}
+
+
+
+int main()
+{
+    cin >> n >> m >> k;
+    for(int i=0;i<m;i++)
+    {
+        int x,y,z;
+        cin >> x >> y >> z;
+        g[i] = { x,y,z};
+    }
+    bf(k);
+    // for(int i=0;i<=n;i++) cout << dist[i] << " " << endl;
+    if(dist[n] > 0x3f3f3f3f/2) cout << "impossible" << endl;
+    else cout << dist[n] << endl;
+    return 0;
+}

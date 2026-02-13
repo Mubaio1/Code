@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+using namespace std;
+int n,m;
+const int N = 105;
+int dx[4] = {-1,0,1,0},dy[4] = {0,1,0,-1};
+int g[N][N];//输入的障碍物情况
+int d[N][N];//记录最大的距离是多少
+pair<int,int> s[N*N];//记录坐标位置信息
+int bfs()
+{
+    int head=0,tail=0;
+    s[0] = {0,0};//初始点坐标为0,0
+    memset(d,-1,sizeof(d));
+    d[0][0] = 0;//记录初始点的距离  为0
+    while(head<=tail)
+    {
+        auto t = s[head++];//记录坐标
+        for(int i=0;i<4;i++){//尝试移动
+            int x = t.first+dx[i];
+            int y = t.second+dy[i];
+            if(x>=0 && x<n && y>=0 && y<m && g[x][y]==0 && d[x][y] == -1){
+                d[x][y] = d[t.first][t.second]+1;
+                s[++tail] = {x,y};
+            }//d[x][y]表示第一次记录的距离为最短
+        }
+    }
+    return d[n-1][m-1]; 
+}
+
+int main()
+{
+
+    cin >> n >> m;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            cin >> g[i][j];
+        }
+    }
+    cout << bfs() << endl;
+    return 0;
+}

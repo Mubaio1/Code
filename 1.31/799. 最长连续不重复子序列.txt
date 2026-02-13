@@ -1,0 +1,26 @@
+#include<bits/stdc++.h>
+using namespace std;
+int rec[100010];
+int a[100010];
+int l,r;
+int main()
+{
+    int n;
+    cin >> n;
+    for(int i=0;i<n;i++){
+        cin >> a[i];
+    }
+    l=0;r=1;
+    //1.记录最大长度 2.维护区间内部取值 3.对比元素并比较将左指针移动到该元素右边
+    int maxlen = 1;
+    //不要局限在标记数组只能为1，多考虑一些思路
+    for(int l=0,r=0;r<n;r++){
+        rec[a[r]]++;
+        while(rec[a[r]]>1){
+            rec[a[l++]]--;
+        }
+        maxlen = max(maxlen,r-l+1);
+    }
+    cout << maxlen << endl;
+    return 0;
+}

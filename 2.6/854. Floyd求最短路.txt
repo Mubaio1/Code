@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 210;
+int g[N][N];
+int n,m,k;
+
+void floyd()
+{
+    for(int q=1;q<=n;q++){
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=n;j++){
+                g[i][j] = min(g[i][j],g[i][q]+g[q][j]);
+            }
+        }
+    }
+}
+
+int main()
+{
+    cin >> n >> m >> k;
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=n;j++){
+            if(i==j) g[i][i] = 0;
+            else g[i][j] = 1e9;
+        }
+    }
+    for(int i=0;i<m;i++)
+    {
+        int x,y,z;
+        cin >> x >> y >> z;
+        g[x][y] = min(g[x][y],z);
+    }
+    floyd();
+    while(k--)
+    {
+        int a,b;
+        cin >> a >> b;
+        if(g[a][b] > 1e9/2) cout << "impossible" << endl;
+        else cout << g[a][b] << endl;
+    }
+    return 0;
+}

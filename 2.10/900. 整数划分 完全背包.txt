@@ -1,0 +1,47 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int mod = 1e9+7;
+const int N = 1010;
+int f[N];
+
+int n;
+int main()
+{
+    cin >> n;
+    f[0] = 1;
+    
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=i;j<=n;j++)
+        {
+            //f[j]的值为f[j]本身的值与转移的值，在完全背包中二者取max，但这里要求和（利用完全背包转移方程）
+            f[j] = (f[j] + f[j-i]) % mod;
+        }
+    }
+    
+    cout << f[n] << endl;
+    return 0;
+}#include<bits/stdc++.h>
+using namespace std;
+const int mod = 1e9+7;
+const int N = 1010;
+int f[N];
+
+int n;
+int main()
+{
+    cin >> n;
+    f[0] = 1;
+    
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=i;j<=n;j++)
+        {
+            //f[j]的值为f[j]本身的值与转移的值，在完全背包中二者取max，但这里要求和（利用完全背包转移方程）
+            f[j] = (f[j] + f[j-i]) % mod;
+        }
+    }
+    
+    cout << f[n] << endl;
+    return 0;
+}

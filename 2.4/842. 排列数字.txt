@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+const int N = 10;
+int path[N];
+bool str[N];
+int n;
+void dfs(int u)
+{
+    if(u == n){
+        for(int i=0;i<n;i++){//这里的0与n无实际意义，只是输出而已
+            cout << path[i] << " ";
+        }
+        cout << endl;
+        return;
+    }
+    for(int i=1;i<=n;i++){//对于从0开始递归，这里从1开始标识可以使得path[u] = i，这样省去了i+1的步骤
+        if(!str[i]){
+            str[i] = true;
+            path[u] = i;
+            dfs(u+1);//关键递归一步，以上代码表示要走到最后一步才能返回 从而可以记录下所有的步骤
+            str[i] = false;
+        }
+    }
+}
+
+int main()
+{
+    cin >> n;
+    dfs(0);
+    return 0;
+}

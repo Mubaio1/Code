@@ -1,0 +1,45 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N = 510;
+const int M = 100010;
+
+int n,m;
+int g[N][N];
+bool st[N];//记录节点是否找到最小值
+int dist[N];//记录节点最小值的距离是多少
+
+int dji()
+{
+    memset(dist,0x3f,sizeof dist);
+    dist[1] = 0;
+    for(int i=0;i<n;i++){
+        int t = -1;
+        for(int j=1;j<=n;j++){
+
+            if(!st[j] && (t==-1 || dist[t]>dist[j])){//确定一个新的最小的点并以此点进行更新，从这个点出发
+                t = j;
+            }
+        }
+        //从上面选出的点到每个其他点的距离和从原点到j的距离取较小值
+        for(int j=1;j<=n;j++) dist[j] = min(dist[j],dist[t]+g[t][j]);
+        st[t] = true;
+    }
+    if(dist[n] == 0x3f3f3f3f) return -1;
+    return dist[n];
+}
+
+
+int main()
+{
+    memset(g,0x3f,sizeof g);
+    cin >> n >> m;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            int x,y,z;
+            cin >> x >> y >> z;
+            g[x][y] = min(g[x][y],z);//保留多条边中的最小值
+        }
+    }
+    cout << dji() << endl;
+    return 0;
+}

@@ -1,0 +1,43 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+const int N = 100010;
+int q[N],p[N];
+
+int find(int x)
+{
+    if(q[x] != x) q[x] = find(q[x]);
+    return q[x];
+}
+
+int main()
+{
+    int n,m;
+    cin >> n >> m;
+    for(int i=1;i<=n;i++){
+        q[i] = i;
+        p[i] = 1;//记录以该节点为根的数的个数
+    }
+    while(m--){
+        string op;
+        cin >> op;
+        int a,b;
+        if(op == "C"){
+            cin >> a >> b;
+            if(q[find(a)] == q[find(b)]) continue;
+            p[find(b)] += p[find(a)];
+            q[find(a)] = find(b);//把a的根并入b的根
+            
+        }
+        else if(op == "Q1"){
+            cin >> a >> b;
+            if(find(a) == find(b)) cout << "Yes" << endl;
+            else cout << "No" << endl;
+        }
+        else{//op == "Q2"
+            cin >> a;
+            cout << p[find(a)] << endl;
+        }
+    }
+    return 0;
+}
